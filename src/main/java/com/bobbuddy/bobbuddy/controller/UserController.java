@@ -1,13 +1,14 @@
 package com.bobbuddy.bobbuddy.controller;
 
+import com.bobbuddy.bobbuddy.dto.user.PostUserReq;
+import com.bobbuddy.bobbuddy.dto.user.UserReq;
 import com.bobbuddy.bobbuddy.entity.UserEntity;
 import com.bobbuddy.bobbuddy.repository.UserRepository;
 import com.bobbuddy.bobbuddy.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ public class UserController {
     // 프로젝트가 실행될 때 빈(싱글톤 객체)들을 만들어서 필요한 곳에 넣어줌
     // 실행 -> 빈 객체 만듬 -> RequiredArgsConstructor 읽어 ->  private final 있는애들한테 넣어줌.
     private final UserRepository userRepository;
+    private final UserService userService;
 
 
     /**
@@ -35,17 +37,26 @@ public class UserController {
      * 회원조회
      */
     @GetMapping("/get")
-    public String getUser() {
+    public ResponseEntity<String> getUser() {
         Optional<UserEntity> byId1 = userRepository.findById("wook");
-        return byId1.get().getEmail();
+        return ResponseEntity.status(200).body(byId1.get().toString());
     }
 
     /**
      * 회원가입
      */
+    @PostMapping("/sign-up")
+    public ResponseEntity<Integer> signUp(@RequestBody PostUserReq userReq) {
+        userService.signUp(userReq);
+        return ResponseEntity.ok(200);
+    }
 
     /**
-     *
+     * 로그인
      */
-
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UserReq.Login userReq) {
+        userService.login(userReq);
+        return ResponseEntity.status(200).body("로그인 성공!!");
+    }
 }
