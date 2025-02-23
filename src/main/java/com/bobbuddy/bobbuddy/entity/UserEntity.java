@@ -11,12 +11,12 @@ public class UserEntity extends TimeEntity {
 
     // 기본키
     @Id
-    String email;
+    private String email;
 
     @Column
-    String username;
+    private String username;
 
     @Column
-    String password;
+    private String password;
 
 }

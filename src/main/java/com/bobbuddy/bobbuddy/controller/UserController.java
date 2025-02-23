@@ -1,6 +1,5 @@
 package com.bobbuddy.bobbuddy.controller;
 
-import com.bobbuddy.bobbuddy.dto.user.PostUserReq;
 import com.bobbuddy.bobbuddy.dto.user.UserReq;
 import com.bobbuddy.bobbuddy.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +34,7 @@ public class UserController {
      * 회원가입
      */
     @PostMapping("/sign-up")
-    public ResponseEntity<Integer> signUp(@RequestBody PostUserReq userReq) {
+    public ResponseEntity<Integer> signUp(@RequestBody UserReq.SignUp userReq) {
 
         userService.signUp(userReq);
 

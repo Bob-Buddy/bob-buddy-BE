@@ -1,15 +1,10 @@
 package com.bobbuddy.bobbuddy.service;
 
-import com.bobbuddy.bobbuddy.dto.user.PostUserReq;
 import com.bobbuddy.bobbuddy.dto.user.UserReq;
 import com.bobbuddy.bobbuddy.entity.UserEntity;
 import com.bobbuddy.bobbuddy.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -31,7 +26,7 @@ public class UserService {
     /**
      * 회원가입
      */
-    public void signUp(PostUserReq userReq) {
+    public void signUp(UserReq.SignUp userReq) {
         // 회원이 이미 존재하는지 확인. -> 존재하면 exception.
         getUser(userReq.getEmail());
 
