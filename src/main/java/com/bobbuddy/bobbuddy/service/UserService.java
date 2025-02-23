@@ -18,32 +18,45 @@ public class UserService {
     private final UserRepository userRepository;
 
     /**
+     * 회원조회
+     */
+    public void getUser(String id) {
+        boolean bool = userRepository.existsById(id);
+
+        if(bool) {
+            throw new RuntimeException("이미 존재하는 Email");
+        }
+    }
+
+    /**
      * 회원가입
      */
     public void signUp(PostUserReq userReq) {
+        // 회원이 이미 존재하는지 확인. -> 존재하면 exception.
+        getUser(userReq.getEmail());
 
         // 클래스를 호출하는 법
         UserEntity entity = new UserEntity();
         entity.setEmail(userReq.getEmail());
         entity.setUsername(userReq.getUsername());
         entity.setPassword(userReq.getPassword());
+
         userRepository.save(entity);
     }
 
     public void login(UserReq.Login userReq) {
-        Optional<UserEntity> OpEntity = userRepository.findById(userReq.getEmail());
-        UserEntity entity = OpEntity.get();
-        String password = entity.getPassword();
 
-        System.out.println(password);
-        System.out.println(userReq.getPassword());
-        System.out.println(password.equals(userReq.getPassword()));
+       UserEntity user = userRepository.findById(userReq.getEmail()).orElseThrow(
+               () -> new RuntimeException("해당하는 이메일이 없습니다.")
+       );
 
-        if (entity.getEmail().equals(userReq.getEmail()) && password.equals(userReq.getPassword())) {
+        String password = user.getPassword();
+
+        if (password.equals(userReq.getPassword())) {
             return;
         }
 
-        throw new RuntimeException("NO!!!!!!!!!!!!!!!!!!!!!!!!!");
+        throw new RuntimeException("비밀번호가 일치하지 않습니다.");
     }
 
     // 서비스 - 레포 - jpa - 디비
